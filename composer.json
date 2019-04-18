@@ -1,5 +1,5 @@
 {
-  "name": "smoothphp/s3",
+  "name": "smooth/s3",
   "description": "Implements Amazon AWS S3 support for SmoothPHP's AssetProvider interface",
   "type": "library",
   "license": "MIT",
