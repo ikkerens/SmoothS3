@@ -9,19 +9,23 @@ use SmoothPHP\Framework\Core\Lock;
 
 class SmoothS3Distributor implements AssetDistributor {
 	private $config;
+	private $domain;
+	private $path;
 	private $index;
 
 	/* @var S3Client */
 	private $client; // transient
 
-	public function __construct(array $config) {
+	public function __construct(array $s3config, $domain, $path = '') {
 		$this->config = array_replace_recursive([
 			'version' => 'latest',
 			'path'    => '',
-		], $config);
-		foreach (['bucket', 'region', 'domain'] as $param)
+		], $s3config);
+		foreach (['bucket', 'region'] as $param)
 			if (!isset($this->config[$param]))
 				throw new Exception('S3CDN \'' . $param . '\' field was not defined in config.');
+		$this->domain = $domain;
+		$this->path = $path;
 	}
 
 	private function loadCacheIndex() {
@@ -32,7 +36,7 @@ class SmoothS3Distributor implements AssetDistributor {
 	}
 
 	public function __sleep() {
-		return ['config'];
+		return ['config', 'domain', 'path'];
 	}
 
 	public function getTextURL($type, $hash, callable $contentProvider) {
@@ -66,7 +70,7 @@ class SmoothS3Distributor implements AssetDistributor {
 
 			$this->client->putObject([
 				'Bucket'      => $this->config['bucket'],
-				'Key'         => last($this->config['path']) . $file,
+				'Key'         => $this->path . $file,
 				'Body'        => $content,
 				'ContentType' => $mime,
 				'ACL'         => 'public-read'
@@ -84,6 +88,13 @@ class SmoothS3Distributor implements AssetDistributor {
 	}
 
 	private function buildURL($file) {
-		return $this->config['domain'] . $this->config['path'] . $file;
+		return $this->domain . $this->path . $file;
+	}
+
+	public function clearCache() {
+		if (!isset($this->client))
+			$this->client = new S3Client($this->config);
+
+		$this->client->deleteMatchingObjects($this->config['bucket'], $this->path, '/(.*)/');
 	}
 }
