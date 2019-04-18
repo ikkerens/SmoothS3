@@ -1,0 +1,17 @@
+{
+  "name": "smoothphp/s3",
+  "description": "Implements Amazon AWS S3 support for SmoothPHP's AssetProvider interface",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rens Rikkerink",
+      "email": "pubdev@ikkerens.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "aws/aws-sdk-php": "^3.0@dev",
+    "ext-json": "*"
+  }
+}
