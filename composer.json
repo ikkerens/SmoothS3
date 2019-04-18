@@ -10,8 +10,14 @@
     }
   ],
   "minimum-stability": "dev",
+  "autoload": {
+    "psr-0": {
+      "SmoothPHP\\": "src/SmoothPHP/"
+    }
+  },
   "require": {
     "aws/aws-sdk-php": "^3.0@dev",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-exif": "*"
   }
 }
