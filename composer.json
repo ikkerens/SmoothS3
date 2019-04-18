@@ -9,14 +9,13 @@
       "email": "pubdev@ikkerens.com"
     }
   ],
-  "minimum-stability": "dev",
   "autoload": {
     "psr-0": {
       "SmoothPHP\\": "src/SmoothPHP/"
     }
   },
   "require": {
-    "aws/aws-sdk-php": "^3.0@dev",
+    "aws/aws-sdk-php": "^3.0",
     "ext-json": "*",
     "ext-exif": "*"
   }
